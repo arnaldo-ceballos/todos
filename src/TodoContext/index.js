@@ -15,11 +15,6 @@ function TodoProvider(props) {
   // Busqueda
   const [searchValue, setSearchValue] = React.useState("");
   const [openModal, setOpenModal] = React.useState(false);
-  // if (searchValue) {
-  //   todos.filter((todo) =>
-  //     todo.text.toLowerCase().includes(searchValue.toLowerCase())
-  //   );
-  // }
 
   // Total de todos
   const totalTodos = todos.length;
@@ -27,17 +22,25 @@ function TodoProvider(props) {
   // Cantidad de todos completados
   const completedTodos = todos.filter((todo) => !!todo.completed).length;
 
-  // Cantidad de todos resultado de la busqueda
-  const totalSearchTodos = todos.filter((todo) =>
-    todo.text.toLowerCase().includes(searchValue.toLowerCase())
-  ).length;
+  // Filtrado de la lista de todos
+  let sercheadTodos = [];
+  if (searchValue.length === 0) {
+    sercheadTodos = todos;
+  } else {
+    sercheadTodos = todos.filter((todo) =>
+      todo.text.toLowerCase().includes(searchValue.toLowerCase())
+    );
+  }
+  console.log(sercheadTodos);
+  const totalSearchTodos = sercheadTodos.length;
 
   // Add todos
   const addTodo = (text) => {
     const newTodos = [...todos];
     newTodos.push({
-      completed: false,
+      id: todos.length + 1,
       text,
+      completed: false,
     });
     saveTodos(newTodos);
   };
@@ -45,16 +48,18 @@ function TodoProvider(props) {
   // Completar todo
   const completeTodo = (id) => {
     const todoIndex = todos.findIndex((todo) => todo.id === id);
-    // console.log("index", todoIndex, todos);
-    todos[todoIndex].completed = !todos[todoIndex].completed;
-    saveTodos(todos);
+    console.log("index", todoIndex, todos);
+    const newTodos = [...todos];
+    newTodos[todoIndex].completed = !newTodos[todoIndex].completed;
+    saveTodos(newTodos);
   };
 
   // Eliminar todo
   const deleteTodo = (id) => {
     const todoIndex = todos.findIndex((todo) => todo.id === id);
-    todos.splice(todoIndex, 1);
-    saveTodos(todos);
+    const newTodos = [...todos];
+    newTodos.splice(todoIndex, 1);
+    saveTodos(newTodos);
   };
 
   const resetLocalStorage = () => {
@@ -71,6 +76,7 @@ function TodoProvider(props) {
         loading,
         error,
         totalTodos,
+        sercheadTodos,
         totalSearchTodos,
         completedTodos,
         searchValue,

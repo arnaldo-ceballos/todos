@@ -4,7 +4,7 @@ function TodoList(props) {
   return (
     <section>
       <ul>{props.children}</ul>
-      <h4>Hide completed tasks</h4>
+      <h4>Funcionalidad para ocultar los todo completados</h4>
     </section>
   );
 }

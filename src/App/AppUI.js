@@ -17,7 +17,9 @@ function AppUI() {
     loading,
     todos,
     completeTodo,
+    totalSearchTodos,
     deleteTodo,
+    sercheadTodos,
     openModal,
     setOpenModal,
   } = React.useContext(TodoContext);
@@ -25,22 +27,17 @@ function AppUI() {
     <React.Fragment>
       <TodoCounter />
       <TodoSearch />
-      <TodoContext.Consumer>
-        {({ totalSearchTodos }) => {
-          <p>Encontrados: {totalSearchTodos}</p>;
-        }}
-      </TodoContext.Consumer>
-
+      <p>Encontrados: {totalSearchTodos}</p>
       <TodoList>
         {error && <TodosError />}
         {loading && <TodosLoading />}
         {!loading && !todos.length && <EmptyTodos />}
-        {todos.map((todo) => (
+        {sercheadTodos.map((todo) => (
           <TodoItem
             key={todo.id}
             text={todo.text}
             completed={todo.completed}
-            onCompleted={() => completeTodo(todo.id)}
+            onComplete={() => completeTodo(todo.id)}
             onDelete={() => deleteTodo(todo.id)}
           />
         ))}
@@ -50,7 +47,6 @@ function AppUI() {
           <TodoForm />
         </Modal>
       )}
-
       <CreateTodoButton setOpenModal={setOpenModal} />
     </React.Fragment>
   );

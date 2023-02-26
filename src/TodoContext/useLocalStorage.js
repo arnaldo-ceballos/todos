@@ -5,6 +5,7 @@ function useLocalStorage(itemName, initialValue) {
   let [error, setError] = React.useState(false);
   let [item, setItem] = React.useState(initialValue);
   React.useEffect(() => {
+    console.log("se ejecuta use effect");
     setTimeout(() => {
       try {
         if (!localStorage.getItem(itemName)) {
@@ -16,12 +17,13 @@ function useLocalStorage(itemName, initialValue) {
       } catch (error) {
         setError(error);
       }
-    }, 5000);
-  });
+    }, 1000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
+  // Para actualizar la información
   const saveItem = (newItem) => {
     try {
-      // console.log("new item", newItem);
       const stringifyItem = JSON.stringify(newItem);
       localStorage.setItem(itemName, stringifyItem);
       setItem(newItem);
@@ -29,6 +31,7 @@ function useLocalStorage(itemName, initialValue) {
       setError(error);
     }
   };
+  // Al ser mas de dos elementos (estado y su actualizador) en el retorno, no se debe retornar un array sino un objeto
   return { item, saveItem, loading, error };
 }
 
